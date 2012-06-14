@@ -25,17 +25,10 @@ class NyanCode(object):
         bf.eval(self.nyan_to_brainfuck(input))
     def nyan_to_brainfuck(self, input):
         tokens = re.split("(nyan)", input, flags=re.IGNORECASE)[1::2]
-        bf = []
-        for token in tokens:
-            bf.append(self.operators[token])
-        return "".join(bf)
+        return "".join([self.operators[token] for token in tokens if token in self.operators])
     def brainfuck_to_nyan(self, input):
         reverse_operators = dict([(j, i) for i, j in self.operators.items()])
-        nyan = []
-        for char in input:
-            if char in reverse_operators:
-                nyan.append(reverse_operators[char])
-        return " ".join(nyan)
+        return " ".join([reverse_operators[char] for char in input if char in reverse_operators])
             
         
 

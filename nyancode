@@ -24,7 +24,8 @@ class NyanCode(object):
         bf = BrainfuckInterpreter()
         bf.eval(self.nyan_to_brainfuck(input))
     def nyan_to_brainfuck(self, input):
-        tokens = re.split("(nyan)", input, flags=re.IGNORECASE)[1::2]
+        re_nyan = re.compile("(nyan)", re.IGNORECASE)
+        tokens = re_nyan.split(input)[1::2]
         return "".join([self.operators[token] for token in tokens if token in self.operators])
     def brainfuck_to_nyan(self, input):
         reverse_operators = dict([(j, i) for i, j in self.operators.items()])

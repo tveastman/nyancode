@@ -5,8 +5,12 @@ import re
 
 def main():
     input = open(sys.argv[1]).read()
-    nyancode = NyanCode()
-    nyancode.eval(input)
+    if sys.argv[0].endswith("nyancode"):
+        interpreter = NyanCode()
+    elif sys.argv[0].endswith("ook"):
+        interpreter = Ook()
+    interpreter.eval(input)
+
 
 
 class NyanCode(object):
@@ -31,7 +35,32 @@ class NyanCode(object):
         reverse_operators = dict([(j, i) for i, j in self.operators.items()])
         return " ".join([reverse_operators[char] for char in input if char in reverse_operators])
             
-        
+
+class Ook(object):
+    operators = {
+        "!!": "-",
+        "..": "+",
+        "?.": "<",
+        ".?": ">",
+        "?!": "[",
+        "!?": "]",
+        ".!": ",",
+        "!.": ".",
+        }
+    def eval(self, input):
+        bf = BrainfuckInterpreter()
+        bf.eval(self.ook_to_brainfuck(input))
+    def ook_to_brainfuck(self, input):
+        re_nyan = re.compile("Ook([!.?])")
+        punctuation = "".join(re_nyan.split(input)[1::2])
+        tokens = re.split("(..)", punctuation)[1::2]
+        return "".join([self.operators[token] for token in tokens if token in self.operators])
+    def brainfuck_to_ook(self, input):
+        reverse_operators = dict([(j, i) for i, j in self.operators.items()])
+        punctuation = "".join([reverse_operators[char] for char in input if char in reverse_operators])
+        return " ".join(["Ook%s" % (i,) for i in tokens])
+            
+
 
 class BrainfuckInterpreter(object):
     def __init__(self):

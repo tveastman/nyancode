@@ -7,7 +7,7 @@ def main():
     input = open(sys.argv[1]).read()
     if sys.argv[0].endswith("nyancode"):
         interpreter = NyanCode()
-    elif sys.argv[0].endswith("ook"):
+    elif sys.argv[0].endswith("banana"):
         interpreter = Ook()
     interpreter.eval(input)
 
